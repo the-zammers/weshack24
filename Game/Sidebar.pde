@@ -19,14 +19,13 @@ class Sidebar {
         strokeWeight(5);
         line(this.boundary, 0, this.boundary, height);
 
+        textAlign(LEFT, CENTER);
         fill(#000000);
         for(int i=0; i<currLevel.components.length; i++) {
-            textAlign(LEFT, CENTER);
             textSize(this.radicalSize);
             text(currLevel.components[i].character, this.boundary + this.padding, i*this.radicalSize + this.radicalSize / 2);
             textSize(this.radicalSize / 3);
             text(currLevel.components[i].meaning, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 - this.radicalSize / 5);
-            textSize(this.radicalSize / 3);
             text(currLevel.components[i].pinyin, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 + this.radicalSize / 5);
         }
     }

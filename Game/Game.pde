@@ -1,7 +1,7 @@
 PFont font;
 Level currLevel;
 Sidebar sidebar;
-// Workspace workspace;
+Workspace workspace;
 Radical held;
 
 void setup() {
@@ -11,6 +11,7 @@ void setup() {
     sidebar = new Sidebar();
     font = createFont("NotoSansSC-Regular.ttf", sidebar.radicalSize);
     textFont(font);
+    workspace = new Workspace();
     held = null;
 }
 
@@ -18,6 +19,7 @@ void draw() {
     background(#FFF0F5);
     currLevel.drawLevel();
     sidebar.drawSidebar();
+    workspace.draw();
     if(held != null) {
         held.draw(mouseX, mouseY, sidebar.radicalSize);
     }
@@ -32,8 +34,26 @@ void mousePressed() {
         System.out.println("boop! radical " + (mouseY / sidebar.radicalSize) );
         held = currLevel.components[mouseY / sidebar.radicalSize];
     }
+    if(mouseButton == LEFT && inBox(workspace.leftPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
+        held = workspace.left;
+        workspace.left = null;
+    }
+    if(mouseButton == LEFT && inBox(workspace.rightPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
+        held = workspace.right;
+        workspace.right = null;
+    }
+}
+
+boolean inBox(PVector bpos, int size, PVector mpos) {
+    return size > Math.abs(mpos.x - bpos.x) && size > Math.abs(mpos.y - bpos.y);
 }
 
 void mouseReleased() {
+    if(mouseButton == LEFT && inBox(workspace.leftPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
+        workspace.left = held;
+    }
+    if(mouseButton == LEFT && inBox(workspace.rightPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
+        workspace.right = held;
+    }
     held = null;
 }
