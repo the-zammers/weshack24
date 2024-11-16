@@ -1,0 +1,10 @@
+# File backups
+*.swp
+*~
+
+# Java class files
+*.class
+
+# Executables
+*.exe
+*.out
