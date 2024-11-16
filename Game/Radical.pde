@@ -1,9 +1,9 @@
 class Radical {
-  String character;
+  char character;
   String meaning;
   String pinyin;
   
-  Radical(String c, String m, String p) {
+  Radical(char c, String m, String p) {
     character = c;
     meaning = m;
     pinyin = p;
