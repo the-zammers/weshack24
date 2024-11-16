@@ -1,12 +1,12 @@
 class Radical {
   char character;
-  String meaning;
   String pinyin;
+  String meaning;
   
-  Radical(char c, String m, String p) {
+  Radical(char c, String p, String m) {
     character = c;
-    meaning = m;
     pinyin = p;
+    meaning = m;
     
   }
   
@@ -14,7 +14,12 @@ class Radical {
    * top left corner at posX and posY, and the character at the center of
    * the square. */
   void draw(float posX, float posY, float size) {
+    stroke(#000000);
+    noFill();
+    rectMode(CENTER);
     square(posX, posY, size);
-    text(meaning, (posX + size) / 2, (posY + size) / 2);
+    textAlign(CENTER, CENTER);
+    textSize(sidebar.radicalSize);
+    text(character, posX, posY);
   }
 }

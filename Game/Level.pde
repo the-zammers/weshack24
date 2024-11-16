@@ -1,8 +1,8 @@
 class Level {
-    char goal;
-    String[] components;
+    Radical goal;
+    Radical[] components;
 
-    Level(char goal, String[] components) {
+    Level(Radical goal, Radical[] components) {
         this.goal = goal;
         this.components = components;
     }
@@ -11,7 +11,8 @@ class Level {
     void drawLevel() {
         fill(#000000);
         textAlign(CENTER, TOP);
-        text("Goal: " + this.goal, width*3/5/2, 0);
+        textSize(sidebar.radicalSize);
+        text("Goal: " + this.goal.character, sidebar.boundary/2, 0);
     }
 }
 
