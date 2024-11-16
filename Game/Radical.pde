@@ -15,9 +15,9 @@ class Radical {
    * the square. */
   void draw(float posX, float posY, float size) {
     stroke(#000000);
-    noFill();
-    rectMode(CENTER);
-    square(posX, posY, size);
+    //noFill();
+    //rectMode(CENTER);
+    //square(posX, posY, size);
     textAlign(CENTER, CENTER);
     textSize(sidebar.radicalSize);
     text(character, posX, posY);
