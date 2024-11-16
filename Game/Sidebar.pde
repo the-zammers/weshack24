@@ -1,22 +1,29 @@
 class Sidebar {
+    int boundary;
+    int padding;
+    int radicalSize;
     
-    Sidebar() {}
+    Sidebar() {
+        this.boundary = width*3/5;
+        this.padding = 10;
+        this.radicalSize = height/12;
+    }
 
     void drawSidebar() {
         noStroke();
         fill(#44FFD2);
         rectMode(CORNERS);
-        rect(width*3/5, 0, width, height);
+        rect(this.boundary, 0, width, height);
         
         stroke(#000000);
         strokeWeight(5);
-        line(width*3/5, 0, width*3/5, height);
+        line(this.boundary, 0, this.boundary, height);
 
-        textSize(height/12);
+        textSize(this.radicalSize);
         textAlign(LEFT, TOP);
         fill(#000000);
         for(int i=0; i<currLevel.components.length; i++) {
-            text(currLevel.components[i], width*3/5, i*height/12);
+            text(currLevel.components[i], this.boundary + this.padding, i*this.radicalSize);
         }
     }
 }
