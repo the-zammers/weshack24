@@ -13,7 +13,7 @@ class Sidebar {
 
     void drawSidebar(Radical[] radicals) {
         noStroke();
-        fill(#44FFD2);
+        fill(#99E1D9);
         rectMode(CORNERS);
         rect(this.boundary, -2*padding, width+2*padding, height+2*padding);
         stroke(#000000);

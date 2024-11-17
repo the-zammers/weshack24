@@ -79,18 +79,20 @@ void draw() {
         noStroke();
         rectMode(CENTER);
         fill(success ? #00FF00 : #FF0000, 100);
+        if (gameOver) fill(#FFFFFF);
         rect(width/2, height/2, width + 4*sidebar.padding, height + 4*sidebar.padding);
     }
     
     if (gameOver) {
       rectMode(CENTER);
-      fill(#FFE5D9);
+      fill(#FFFFFF);
       rect(width/2, height/2, width - 150, height/2 + 150);
       textSize(56);
       textAlign(CENTER);
       fill(#000000);
       text("CONGRATULATIONS!", width/2, height/2 - 50);
       text("You win!", width/2, height/2 + 50);
+      inAnimation = true;
       
     
     }
