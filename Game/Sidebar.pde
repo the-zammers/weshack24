@@ -28,8 +28,8 @@ class Sidebar {
             textSize(this.radicalSize);
             text(radicals[i].character, this.boundary + this.padding, i*this.radicalSize + this.radicalSize / 2);
             textSize(this.radicalSize / 3);
-            text(radicals[i].meaning, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 - this.radicalSize / 5);
-            text(radicals[i].pinyin, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 + this.radicalSize / 5);
+            text(radicals[i].pinyin, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 - this.radicalSize / 5);
+            text(radicals[i].meaning, this.boundary + this.padding + this.radicalSize + this.padding, i*this.radicalSize + this.radicalSize / 2 + this.radicalSize / 5);
         }
         popMatrix();
     }

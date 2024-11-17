@@ -7,6 +7,7 @@ boolean inAnimation;
 boolean success;
 int animationFrame;
 float shakeMagnitude;
+boolean levelOver;
 int numOfRadicals = 17;
 int numOfLevels = 17;
 Radical[] radicals = new Radical[numOfRadicals];
@@ -44,12 +45,19 @@ void setup() {
       levels[i] = new Level(goal, leftComponent, rightComponent);
     }
     inAnimation = false;
+    levelOver = false;
 }
 
 void draw() {
     background(#FFF0F5);
 
-    if(inAnimation) {
+    if(inAnimation && success) {
+        translate(width/2, height/2);
+        scale(1 + 0.05 * sin((float) animationFrame * PI / 10));
+        translate(-width/2, -height/2);
+        if(animationFrame-- < 0) inAnimation = false;
+    }
+    if(inAnimation && !success) {
         float dx = (random(2)>1 ? 1 : -1) * shakeMagnitude;
         float dy = (random(2)>1 ? 1 : -1) * shakeMagnitude;
         translate(dx, dy);
@@ -57,7 +65,6 @@ void draw() {
         if(shakeMagnitude < 0) inAnimation = false;
     }
 
-    levels[levelCounter].drawLevel();
     if(sidebar.scrollBy < 0) sidebar.scrollBy++;
     if(sidebar.scrollBy > (numOfRadicals - 12) * 2) sidebar.scrollBy--;
     sidebar.drawSidebar(radicals);
@@ -75,7 +82,7 @@ void draw() {
 }
 
 void mousePressed() {
-    if(inAnimation) return;
+    if(inAnimation || levelOver) return;
     // If mouse is in sidebar
     if(mouseButton == LEFT
             && 0 < mouseX - sidebar.boundary - sidebar.padding
@@ -102,7 +109,7 @@ boolean inBox(PVector bpos, int size, PVector mpos) {
 }
 
 void mouseReleased() {
-    if(inAnimation) return;
+    if(inAnimation || levelOver) return;
     boolean dropped = false;
     if(mouseButton == LEFT && inBox(workspace.leftPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
         workspace.left = held;
@@ -119,6 +126,7 @@ void mouseReleased() {
       if (levels[levelCounter].isGoal(workspace.left, workspace.right)) {
         // Make this actually do stuff on the display later :)
         success = true;
+        levelOver = true;
       }
       else {
         success = false;
@@ -129,8 +137,29 @@ void mouseReleased() {
     }
 }
 
+void mouseClicked() {
+    if(inAnimation) return;
+    if(levelOver && mouseButton == LEFT){
+        levelCounter++;
+        levelOver = false;
+        workspace.left = null;
+        workspace.right = null;
+        held = null;
+    }
+}
 
 void mouseWheel(MouseEvent event) {
     float e = event.getCount();
     sidebar.scrollBy += e;
 }
+
+String getLevelDescription(int index) {
+    if(index < 0) return "Debug Level";
+    if(index < 2) return "Semantic Compounds";
+    if(index < 6) return "PHONOsemantic Compounds";
+    if(index < 10) return "PhonoSEMANTIC Compounds";
+    if(index < 12) return "Challenge A";
+    if(index < 17) return "Challenge B";
+    return "Debug Level";
+}
+
