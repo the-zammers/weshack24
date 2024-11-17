@@ -1,3 +1,4 @@
+import processing.sound.*;
 PFont font;
 int levelCounter; // use this to index into levels, perhaps.
 Sidebar sidebar;
@@ -13,12 +14,15 @@ int numOfRadicals = 17;
 int numOfLevels = 17;
 Radical[] radicals = new Radical[numOfRadicals];
 Level[] levels = new Level[numOfLevels];
+boolean soundPlayed;
+SoundFile successSound;
+SoundFile failureSound;
 
 
 void setup() {
     size(800, 800);
     inAnimation = true;
-    levelCounter = 0;
+    levelCounter = 16;
     sidebar = new Sidebar();
     font = createFont("NotoSansSC-Regular.ttf", sidebar.radicalSize);
     textFont(font);
@@ -48,23 +52,37 @@ void setup() {
     inAnimation = false;
     levelOver = false;
     gameOver = false;
+    soundPlayed = false;
+    successSound = new SoundFile(this, "success.wav");
+    failureSound = new SoundFile(this, "failure.wav");
 }
 
 void draw() {
     background(#FFF0F5);
 
     if(inAnimation && success) {
+      
+        if (!soundPlayed && !gameOver) successSound.play();
+        soundPlayed = true;
         translate(width/2, height/2);
         scale(1 + 0.05 * sin((float) animationFrame * PI / 10));
         translate(-width/2, -height/2);
-        if(animationFrame-- < 0) inAnimation = false;
+        if(animationFrame-- < 0) {
+          inAnimation = false;
+          soundPlayed = false;
+        }
     }
     if(inAnimation && !success) {
+        if (!soundPlayed) failureSound.play();
+        soundPlayed = true;
         float dx = (random(2)>1 ? 1 : -1) * shakeMagnitude;
         float dy = (random(2)>1 ? 1 : -1) * shakeMagnitude;
         translate(dx, dy);
         if(animationFrame-- < 0) shakeMagnitude--;
-        if(shakeMagnitude < 0) inAnimation = false;
+        if(shakeMagnitude < 0) {
+          inAnimation = false;
+          soundPlayed = false;
+        }
     }
 
     if(sidebar.scrollBy < 0) sidebar.scrollBy++;

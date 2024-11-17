@@ -25,5 +25,5 @@ class Radical {
     textAlign(CENTER, CENTER);
     textSize(sidebar.radicalSize);
     text(character, posX, posY);
-  }
+  }  
 }
