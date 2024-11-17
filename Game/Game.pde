@@ -133,7 +133,7 @@ void mouseReleased() {
       }
       inAnimation = true;
       animationFrame = 10;
-      shakeMagnitude = sidebar.padding;
+      shakeMagnitude = sidebar.padding * 3/4;
     }
 }
 
