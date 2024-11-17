@@ -22,7 +22,7 @@ SoundFile failureSound;
 void setup() {
     size(800, 800);
     inAnimation = true;
-    levelCounter = 16;
+    levelCounter = 0;
     sidebar = new Sidebar();
     font = createFont("NotoSansSC-Regular.ttf", sidebar.radicalSize);
     textFont(font);
