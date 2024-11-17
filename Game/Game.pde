@@ -8,6 +8,7 @@ boolean success;
 int animationFrame;
 float shakeMagnitude;
 boolean levelOver;
+boolean gameOver;
 int numOfRadicals = 17;
 int numOfLevels = 17;
 Radical[] radicals = new Radical[numOfRadicals];
@@ -46,6 +47,7 @@ void setup() {
     }
     inAnimation = false;
     levelOver = false;
+    gameOver = false;
 }
 
 void draw() {
@@ -78,6 +80,19 @@ void draw() {
         rectMode(CENTER);
         fill(success ? #00FF00 : #FF0000, 100);
         rect(width/2, height/2, width + 4*sidebar.padding, height + 4*sidebar.padding);
+    }
+    
+    if (gameOver) {
+      rectMode(CENTER);
+      fill(#FFE5D9);
+      rect(width/2, height/2, width - 150, height/2 + 150);
+      textSize(56);
+      textAlign(CENTER);
+      fill(#000000);
+      text("CONGRATULATIONS!", width/2, height/2 - 50);
+      text("You win!", width/2, height/2 + 50);
+      
+    
     }
 }
 
@@ -139,12 +154,17 @@ void mouseReleased() {
 
 void mouseClicked() {
     if(inAnimation) return;
-    if(levelOver && mouseButton == LEFT){
+    if(levelOver && mouseButton == LEFT && levelCounter < (numOfLevels - 1) ){
         levelCounter++;
         levelOver = false;
         workspace.left = null;
         workspace.right = null;
         held = null;
+    }
+    // If the game is complete, after going thru all levels
+    else if (levelOver && levelCounter == (numOfLevels - 1) ){
+      gameOver = true;
+      
     }
 }
 
@@ -162,4 +182,3 @@ String getLevelDescription(int index) {
     if(index < 17) return "Challenge B";
     return "Debug Level";
 }
-
