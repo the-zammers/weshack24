@@ -3,6 +3,11 @@ Level currLevel;
 Sidebar sidebar;
 Workspace workspace;
 Radical held;
+int numOfRadicals = 14;
+int numOfLevels = 14;
+Radical[] radicals = new Radical[numOfRadicals];
+Level[] levels = new Level[numOfLevels];
+
 
 void setup() {
     size(800, 800);
@@ -13,6 +18,33 @@ void setup() {
     textFont(font);
     workspace = new Workspace();
     held = null;
+    
+    // Reads in input from the all_radicals text file. 
+    String[] inputRadicals = loadStrings("all_radicals.txt");
+    for (int i = 0; i < inputRadicals.length; i++) {
+      String[] data = split(inputRadicals[i], "-");
+      
+      // the .charAt(0) converts String into char
+      // Puts the data into radicals.
+      radicals[i] = new Radical(data[0].charAt(0), data[1], data[2]);
+    }
+    
+    // Reads in input from the levels text file
+    String[] inputLevels = loadStrings("levels.txt");
+    for (int i = 0; i < inputLevels.length; i++) {
+      // Just some data processing.
+      String[] data = split(inputLevels[i], "-");
+      Radical goal = new Radical(data[0].charAt(0), data[1], data[2]);
+      Radical[] components = new Radical[2];
+      components[0] = new Radical(data[3].charAt(0));
+      components[1] = new Radical(data[4].charAt(0));
+      
+      // Puts the data into levels.
+      levels[i] = new Level(goal, components);
+    }
+    
+    
+    
 }
 
 void draw() {
