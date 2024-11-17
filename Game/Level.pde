@@ -14,6 +14,19 @@ class Level {
         textSize(sidebar.radicalSize);
         text("Goal: " + this.goal.character, sidebar.boundary/2, 0);
     }
+    
+    /* Returns true if leftSide and rightSide match the components of goal. */
+    boolean isGoal(Radical leftSide, Radical rightSide) {
+      if (leftSide.character != this.components[0].character) {
+        return false;
+      }
+      if (rightSide.character != this.components[1].character) {
+        return false;
+      }
+      
+      return true;
+      
+    }
 }
 
     
