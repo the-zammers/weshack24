@@ -3,6 +3,10 @@ class Radical {
   String pinyin;
   String meaning;
   
+  Radical(char c) {
+    character = c;
+  }
+  
   Radical(char c, String p, String m) {
     character = c;
     pinyin = p;
