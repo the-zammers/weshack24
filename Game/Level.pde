@@ -1,10 +1,12 @@
 class Level {
     Radical goal;
-    Radical[] components;
+    char leftComponent;
+    char rightComponent;
 
-    Level(Radical goal, Radical[] components) {
+    Level(Radical goal, char leftComponent, char rightComponent) {
         this.goal = goal;
-        this.components = components;
+        this.leftComponent = leftComponent;
+        this.rightComponent = rightComponent;
     }
 
 
@@ -12,20 +14,12 @@ class Level {
         fill(#000000);
         textAlign(CENTER, TOP);
         textSize(sidebar.radicalSize);
-        text("Goal: " + this.goal.character, sidebar.boundary/2, 0);
+        text("Goal: " + this.goal.character, sidebar.boundary/2, sidebar.padding);
     }
     
     /* Returns true if leftSide and rightSide match the components of goal. */
     boolean isGoal(Radical leftSide, Radical rightSide) {
-      if (leftSide.character != this.components[0].character) {
-        return false;
-      }
-      if (rightSide.character != this.components[1].character) {
-        return false;
-      }
-      
-      return true;
-      
+      return (leftSide.character == this.leftComponent) && (rightSide.character == this.rightComponent);
     }
 }
 

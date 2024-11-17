@@ -1,20 +1,22 @@
 PFont font;
 int levelCounter; // use this to index into levels, perhaps.
-Level currLevel; 
 Sidebar sidebar;
 Workspace workspace;
 Radical held;
-int numOfRadicals = 14;
-int numOfLevels = 14;
+boolean inAnimation;
+boolean success;
+int animationFrame;
+float shakeMagnitude;
+int numOfRadicals = 17;
+int numOfLevels = 17;
 Radical[] radicals = new Radical[numOfRadicals];
 Level[] levels = new Level[numOfLevels];
 
 
 void setup() {
     size(800, 800);
-    System.out.println("hello, world");
+    inAnimation = true;
     levelCounter = 0;
-    currLevel = new Level(new Radical('林', "lín", "forest"), new Radical[] {new Radical('木', "mù", "wood"), new Radical('人', "rén", "person"), new Radical('子', "zǐ", "child"), new Radical('工', "gōng", "work")});
     sidebar = new Sidebar();
     font = createFont("NotoSansSC-Regular.ttf", sidebar.radicalSize);
     textFont(font);
@@ -36,36 +38,52 @@ void setup() {
       // Just some data processing.
       String[] data = split(inputLevels[i], "-");
       Radical goal = new Radical(data[0].charAt(0), data[1], data[2]);
-      Radical[] components = new Radical[2];
-      components[0] = new Radical(data[3].charAt(0));
-      components[1] = new Radical(data[4].charAt(0));
+      char leftComponent = data[3].charAt(0);
+      char rightComponent = data[4].charAt(0);
       // Puts the data into levels.
-      levels[i] = new Level(goal, components);
+      levels[i] = new Level(goal, leftComponent, rightComponent);
     }
-    
-    
-    
+    inAnimation = false;
 }
 
 void draw() {
     background(#FFF0F5);
-    currLevel.drawLevel();
-    sidebar.drawSidebar();
+
+    if(inAnimation) {
+        float dx = (random(2)>1 ? 1 : -1) * shakeMagnitude;
+        float dy = (random(2)>1 ? 1 : -1) * shakeMagnitude;
+        translate(dx, dy);
+        if(animationFrame-- < 0) shakeMagnitude--;
+        if(shakeMagnitude < 0) inAnimation = false;
+    }
+
+    levels[levelCounter].drawLevel();
+    if(sidebar.scrollBy < 0) sidebar.scrollBy++;
+    if(sidebar.scrollBy > (numOfRadicals - 12) * 2) sidebar.scrollBy--;
+    sidebar.drawSidebar(radicals);
     workspace.draw();
     if(held != null) {
         held.draw(mouseX, mouseY, sidebar.radicalSize);
     }
+
+    if(inAnimation) {
+        noStroke();
+        rectMode(CENTER);
+        fill(success ? #00FF00 : #FF0000, 100);
+        rect(width/2, height/2, width + 4*sidebar.padding, height + 4*sidebar.padding);
+    }
 }
 
 void mousePressed() {
+    if(inAnimation) return;
     // If mouse is in sidebar
     if(mouseButton == LEFT
             && 0 < mouseX - sidebar.boundary - sidebar.padding
             && mouseX - sidebar.boundary - sidebar.padding < sidebar.radicalSize
-            && mouseY / sidebar.radicalSize < currLevel.components.length
+            && 0 <= (mouseY + sidebar.scrollBy * sidebar.radicalSize / 2) / sidebar.radicalSize
+            && (mouseY + sidebar.scrollBy * sidebar.radicalSize / 2) / sidebar.radicalSize < radicals.length
       ) {
-        System.out.println("boop! radical " + (mouseY / sidebar.radicalSize) );
-        held = currLevel.components[mouseY / sidebar.radicalSize];
+        held = radicals[(mouseY + sidebar.scrollBy * sidebar.radicalSize / 2) / sidebar.radicalSize];
     }
     // If mouse is in left workspace
     if(mouseButton == LEFT && inBox(workspace.leftPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
@@ -84,19 +102,35 @@ boolean inBox(PVector bpos, int size, PVector mpos) {
 }
 
 void mouseReleased() {
+    if(inAnimation) return;
+    boolean dropped = false;
     if(mouseButton == LEFT && inBox(workspace.leftPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
         workspace.left = held;
+        dropped = true;
     }
     if(mouseButton == LEFT && inBox(workspace.rightPos, sidebar.radicalSize, new PVector(mouseX, mouseY))) {
         workspace.right = held;
+        dropped = true;
     }
     held = null;
     
     // Check if the left and right workspace match the level's goal. 
-    if (workspace.left != null && workspace.right != null) {
+    if (dropped && workspace.left != null && workspace.right != null) {
       if (levels[levelCounter].isGoal(workspace.left, workspace.right)) {
         // Make this actually do stuff on the display later :)
-        System.out.println("it matches!");
+        success = true;
       }
+      else {
+        success = false;
+      }
+      inAnimation = true;
+      animationFrame = 10;
+      shakeMagnitude = sidebar.padding;
     }
+}
+
+
+void mouseWheel(MouseEvent event) {
+    float e = event.getCount();
+    sidebar.scrollBy += e;
 }
