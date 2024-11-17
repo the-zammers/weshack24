@@ -1,6 +1,9 @@
 林-lín-forest-木-木
+话-huà-talk-讠-舌
 湖-hú-lake-氵-胡
 河-hé-river-氵-可
+源-yuán-spring-氵-原
+浪-làng-wave-氵-良
 清-qīng-clear-氵-青
 情-qíng-feeling-忄-青
 请-qǐng-request-讠-青
@@ -11,4 +14,4 @@
 袍-páo-gown-衤-包
 泡-pào-bubble-氵-包
 饱-bǎo-full-饣-包
-抱-bào-hug-扌-包 
+抱-bào-hug-扌-包
